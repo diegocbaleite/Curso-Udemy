@@ -1,5 +1,6 @@
 package br.com.leite.controllers;
 
+import br.com.leite.exception.UnsupportedMathOperationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,13 +14,15 @@ public class MathController {
     public Double sum(@PathVariable("numberOne") String numberOne,
                       @PathVariable("numberTwo") String numberTwo
     ) throws Exception {
-        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) throw new IllegalAccessException();
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw new UnsupportedMathOperationException("Por favor, insira um valor numérico!");
         return convertToDouble(numberOne) + convertToDouble(numberTwo);
     }
 
     private Double convertToDouble(String strNumber) throws IllegalAccessException {
 
-        if (strNumber == null || strNumber.isEmpty()) throw new IllegalAccessException();
+        if (strNumber == null || strNumber.isEmpty())
+            throw new UnsupportedMathOperationException("Por favor, insira um valor numérico!");
         String number = strNumber.replace(",", ".");// R$ 5,00 USD 5.0
         return Double.parseDouble(number);
     }
